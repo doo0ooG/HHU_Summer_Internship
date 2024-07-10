@@ -2,6 +2,7 @@ package com.doog.service.impl;
 
 import com.doog.mapper.UserMapper;
 import com.doog.pojo.User;
+import com.doog.pojo.VO.UserVO;
 import com.doog.service.UserService;
 import com.doog.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         User user = userMapper.findByName(username);
         return user;
+    }
+
+    @Override
+    public UserVO findByUsernameReturnVO(String username) {
+        return userMapper.findByUsernameReturnVO(username);
     }
 
     @Override

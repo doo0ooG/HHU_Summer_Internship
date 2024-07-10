@@ -1,4 +1,4 @@
-package com.doog.pojo;
+package com.doog.pojo.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,16 +10,16 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Activity {
+public class ActivityVO {
     private Long id;
 
     private String name;
 
-    private Long clubId;
+    private String clubName;
 
     private String info;
 
-    private Long userId;
+    private String hostUsername;
 
     private Date startDate;
 

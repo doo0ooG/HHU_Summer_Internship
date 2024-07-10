@@ -1,4 +1,4 @@
-package com.doog.pojo;
+package com.doog.pojo.VO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -8,14 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserVO {
 
     private Long id;
 
     private String username;
-
-    @JsonIgnore
-    private String password;
 
     private String sex;
 
@@ -27,7 +24,7 @@ public class User {
 
     private String grade;
 
-    private Long clubId;
+    private String clubName;
 
     private String photoPath;
 
