@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doog.mapper.ClubMapper">
+
+    <select id="findAll" resultType="com.doog.pojo.Club">
+        select * from t_club where is_del is false
+    </select>
+
+
+
+    <select id="findByName" resultType="com.doog.pojo.Club">
+        select * from t_club where name = #{name}
+    </select>
+
+    <insert id="add">
+        INSERT INTO t_club (name, info, cate, date) VALUES (#{name}, #{info}, #{cate}, now())
+    </insert>
+
+    <update id="modify">
+        UPDATE t_club set cate = #{cate}, info = #{info} WHERE id = #{id}
+    </update>
+
+    <select id="detail" resultType="com.doog.pojo.Club">
+        select * from t_club where id = #{clubId}
+    </select>
+
+    <update id="delete">
+        UPDATE t_club set is_del = 1 WHERE id = #{id}
+    </update>
+
+    <select id="pageList" resultType="com.doog.pojo.Club">
+    </select>
+</mapper>
+

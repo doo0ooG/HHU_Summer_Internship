@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doog.mapper.UserMapper">
+
+    <select id="getUserList" resultType="com.doog.pojo.User">
+        select * from t_user
+    </select>
+
+    <select id="findByName" resultType="com.doog.pojo.User">
+        select * from t_user where username=#{username}
+    </select>
+
+    <insert id="register">
+        insert into t_user(username, password) values(#{username}, #{password})
+    </insert>
+
+    <update id="modifyPermission">
+        UPDATE t_user SET per = #{per}, club_id = #{clubId} WHERE username = #{username}
+    </update>
+
+    <update id="modifyBaseInfo">
+        UPDATE t_user SET sex = #{sex}, tel = #{tel}, motto = #{motto}, grade = #{grade} WHERE id = #{id}
+    </update>
+
+    <select id="findByUsernameReturnVO" resultType="com.doog.pojo.VO.UserVO">
+        SELECT u.id, u.username, u.sex, u.tel, u.per, u.motto, u.grade, u.photo_path, c.name AS club_name
+        FROM t_user u
+        LEFT JOIN t_club c ON u.club_id = c.id
+        WHERE u.username = #{username}
+    </select>
+
+    <update id="updateAvatar">
+        UPDATE t_user SET photo_path = #{photoPath} WHERE id = #{userId}
+    </update>
+
+    <update id="resetPassword">
+        UPDATE t_user SET password = #{password} WHERE username = #{username}
+    </update>
+
+    <select id="detail" resultType="com.doog.pojo.User">
+        select * from t_user where id = #{userId}
+    </select>
+    <!--    <select id="register" resultType="void">-->
+<!--        insert into t_user(username, password) values(#{username}, #{password})-->
+<!--    </select>-->
+</mapper>
+

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doog.mapper.ActivityMapper">
+
+    <insert id="add">
+        INSERT INTO t_activity (name, club_id, info, user_id, start_date, end_date, pos, cate, limit_num, photo_path) VALUES (#{name}, #{clubId}, #{info}, #{userId}, #{startDate}, #{endDate}, #{pos}, #{cate}, #{limitNum}, #{photoPath})
+    </insert>
+
+    <insert id="enroll">
+        INSERT INTO t_enroll(user_id, activity_id, date) VALUES(#{userId}, #{activityId}, now())
+    </insert>
+
+    <select id="findEnrollByUserIdAndActivityId" resultType="com.doog.pojo.Enroll">
+        select * from t_enroll where user_id = #{userId} and activity_id = #{activityId}
+    </select>
+
+    <insert id="comment">
+        INSERT INTO t_remark(user_id, activity_id, info, date) VALUES(#{userId}, #{activityId}, #{comment}, now())
+    </insert>
+
+    <select id="list" resultType="com.doog.pojo.VO.ActivityVO">
+        SELECT
+            a.id AS id,
+            a.name AS name,
+            a.info AS info,
+            a.start_date AS startDate,
+            a.end_date AS endDate,
+            a.pos AS pos,
+            a.cate AS cate,
+            a.photo_path AS photoPath,
+            a.limit_num AS limitNum,
+            u.username AS hostUsername,
+            c.name AS clubName
+        FROM t_activity a
+                 LEFT JOIN t_user u ON a.user_id = u.id
+                 LEFT JOIN t_club c ON a.club_id = c.id
+    </select>
+
+    <select id="detailById" resultType="com.doog.pojo.VO.ActivityDetailVO">
+        SELECT
+        a.id,
+        a.name,
+        a.club_id AS clubId,
+        a.info,
+        a.user_id AS userId,
+        a.start_date AS startDate,
+        a.end_date AS endDate,
+        a.pos,
+        a.cate,
+        a.limit_num AS limitNum,
+        a.photo_path AS photoPath,
+        (SELECT COUNT(*) FROM t_enroll e WHERE e.activity_id = a.id) AS enrollNum
+        FROM
+        t_activity a
+        WHERE
+        a.id = #{activityId}
+    </select>
+
+    <delete id="withdraw">
+        delete from t_enroll where user_id = #{userId} and activity_id = #{activityId}
+    </delete>
+
+    <select id="commentListById" resultType="com.doog.pojo.VO.CommentVO">
+        SELECT
+            c.id,
+            c.activity_id AS activityId,
+            c.user_id AS userId,
+            c.info,
+            c.date,
+            u.username,
+            u.photo_path AS photoPath
+        FROM t_remark c
+                 LEFT JOIN t_user u ON c.user_id = u.id
+        WHERE c.activity_id = #{activityId}
+    </select>
+
+    <select id="commentList" resultType="com.doog.pojo.VO.CommentVO">
+        SELECT
+            c.id,
+            c.activity_id AS activityId,
+            c.user_id AS userId,
+            c.info,
+            c.date,
+            u.username,
+            u.photo_path AS photoPath,
+            a.name AS activityName
+        FROM t_remark c
+                 LEFT JOIN t_user u ON c.user_id = u.id
+                 LEFT JOIN t_activity a ON c.activity_id = a.id
+    </select>
+
+    <select id="enrollList" resultType="com.doog.pojo.VO.EnrollVO">
+        SELECT
+            e.id,
+            e.activity_id AS activityId,
+            e.user_id AS userId,
+            e.date,
+            u.username,
+            a.name AS activityName
+        FROM t_enroll e
+                 LEFT JOIN t_user u ON e.user_id = u.id
+                 LEFT JOIN t_activity a ON e.activity_id = a.id
+    </select>
+</mapper>
+
